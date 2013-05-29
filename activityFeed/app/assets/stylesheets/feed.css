@@ -1,0 +1,6 @@
+.feed-photo img { max-width: 400px; }
+.status_feeds {backgroud-color: gray; }
+li {
+  position: relative; padding: 8px 12px 8px 62px; min-height: 50px; border-bottom: 1px solid #eee;
+ }
+

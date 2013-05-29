@@ -1,0 +1,7 @@
+li.all_feeds.photo_feeds
+  a.feed-photo href=parsed_obj.contained_picture(:original)
+    .photo_container = image_tag(parsed_obj.contained_picture(:large))
+  - if !parsed_obj.text.nil?
+    p.clear = URLExtractor.new.text_to_url(parsed_obj.text).html_safe
+  .date-and-links
+    = render :partial => 'activities/timestamp', :object => parsed_obj

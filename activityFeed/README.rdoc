@@ -1,0 +1,84 @@
+ActivityFeed README
+
+Description:
+
+A project to serve user's activity feed in form of web services and web application.
+
+Setup:
+
+- Install Rails 3.2.3 from http://www.ruby-lang.org/en/downloads/
+- Install rails by command "gem install rails"
+- Run "bundle install" to install all required gems.
+- Set credentials at "config/database.yml"
+- Run "rake db:create" to create database.
+- Run "rake db:migrate" to create all required tables in database.
+- Run "rake db"seed_fu" to insert basic and test data into tables.
+
+All is set to use this project so start server by "rails s"
+
+Introduction:
+
+It is a project of Restful architecture. User activities can be create, get, update and delete by web services.
+
+By dynamic programming, user's activities are parsed and store in database. Due to dynamic programming, adding new type of activities is effort less from coding perspective.
+
+Responses are also cached based on URL and will be sweep as soon as user made any change in model.
+
+Following is code hierarchy along some description:
+
+GemFile:
+		Contains list of Gems that are used in application.
+
+- config/routes.rb:
+		Contains application routes. Nested Resourceful routes are implemented here. Following are application routes:
+
+		user_activity_feed_index GET    /user/:user_id/activity_feed(.:format)          activity_feed#index
+														 POST   /user/:user_id/activity_feed(.:format)          activity_feed#create
+			new_user_activity_feed GET    /user/:user_id/activity_feed/new(.:format)      activity_feed#new
+		 edit_user_activity_feed GET    /user/:user_id/activity_feed/:id/edit(.:format) activity_feed#edit
+					user_activity_feed GET    /user/:user_id/activity_feed/:id(.:format)      activity_feed#show
+														 PUT    /user/:user_id/activity_feed/:id(.:format)      activity_feed#update
+														 DELETE /user/:user_id/activity_feed/:id(.:format)      activity_feed#destroy
+- config/db:
+		migrate: 	Contains database migrations, as per convention
+		fixtures: Contains rb files that populate basic and test data into database after "rake db:seed_fu"
+
+- app/controllers:
+		application_controller.rb: 		Contains filters and validation actions for whole application, as per ROR convention.
+		activity_feed_controller.rb:	Contains actions of restful web services to interact Database and respond according to request type:
+																	JSON will be returned if request is made as web service. Otherwise HTML will be returned in response.
+		activity_feed_sweeper.rb:			Contains sweep methods to expire cache on the bases of change in Model.
+
+- app/models:
+		Contains models of database tables, as per convention.
+
+- app/helpers:
+		Contains helper modules of all controllers. "activity_feed_helper.rb" returns HTML using dynamic programming.
+
+- app/views:
+		layout/application.html.erb: Contains application layout which is used for all HTML responses
+		activity_feed:							 Contains HTML views of activity_feed controller
+		activities:									 Contains partial views of each activity. Slim is use to create HTML.
+
+- app/customobects:
+		Contains activity objects. Each activity is defined in separate class and its attr_accessor are defined.
+		If new activity is added into the application, we need to add new custom object under this folder.
+
+- app/parser:
+		Contains activity parsers. As activities are persisted in form of JSON so these parsers parse them to render.
+		If new activity is added into the application, we need to add new parser under this folder.
+
+- tmp/cache:
+		Contains cached pages against user's requests.
+
+Following technical concepts are implemented in this project:
+
+- Dynamic Programming.
+- Nested Resourceful routes
+- respond_to/respond_with
+- Action caching
+- Sweepers
+- Helpers
+- Modules and Modules Inheritance.
+- Slim
+

@@ -1,0 +1,8 @@
+li.notification_feeds
+  p.message == URLExtractor.new.text_to_url(parsed_obj.text).html_safe
+  .date-and-links
+    = render :partial => 'activities/timestamp', :object => parsed_obj
+
+
+
+
